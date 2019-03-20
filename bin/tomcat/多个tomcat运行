@@ -1,0 +1,17 @@
+一、手动启动
+1.编辑bin/startup.bat
+在文件第一行添加如下两行
+	SET JAVA_HOME=C:\websoft\jdk1.6.0_33 （JDK所在路径）
+	SET CATALINA_HOME=C:\test\tomcat222222（tomcat解压的路径）
+	
+2.修改conf/server.xml文件，修改地方有三处:端口修改
+	<server port
+	protocol="HTTP
+	protocol="AJP
+
+二、命令启动
+1.增加环境变量CATALINA_HOME2，值为新的tomcat的地址;增加环境变量CATALINA_BASE2，值为新的tomcat的地址;
+2.找到第二个tomcat中的startup.bat文件，把里面的CATALINA_HOME改为CATALINA_HOME2 
+3.找到第二个tomcat中的catalina.bat，把里面的CATALINA_HOME改为CATALINA_HOME2，CATALINA_BASE改为CATALINA_BASE2
+4.把端口改为没有是使用的端口（一、2）
+5.加入path中:%CATALINA_HOME7-1%\bin

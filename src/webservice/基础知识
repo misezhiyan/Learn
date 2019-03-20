@@ -1,0 +1,132 @@
+1.什么叫webservice
+在web开发过程中一种基于HTTP协议的组件服务
+	目的:使一个程序可以透明的调用互联网的程序, 只要被调用者公开服务接口, 客户端就可以调用(跨技术)
+	功能:将若干的异形网络,进行横向的链接(整合资源)
+
+webservice是一种设计标准
+Axis (老牌)
+XFire(面向接口)
+CXF	 (Apache)
+
+
+核心:SOAP(简单服务协议)---描述(xml)wsdl---被调用(服务捷库)---客户端
+
+1.使用Axis的服务平台, 创建和分布 webservice
+	发布服务的手段
+		即时发布 JWS
+			1.编写java代码,定制服务(编写类--方法)
+			2.修改文件的后缀(jws)
+			3.发布webservcie ==将jws文件放到web-inf下
+			4.编写客户端 service==>call==>url==>invoke
+			注意:如果没有java源码或者程序存在包结构,不能使用即时发布
+		
+		定制发布 WSDD
+			1.只有class没有源码, 或者包含包结构
+				实现步骤:
+					1.编写带有包结构的java代码(普通:方法的编写)
+					2.将该程序进行编译---class
+					3.将class文件(带包)放到Axis\web-inf\classes
+					4.使用命令在Axis服务平台上注册服务(声明服务的方法)
+						Axis\web-inf\classes
+							1.编写一个当前项目配置文件server-config.wsdd(全局文件,其它的发布都会被程序集合到这个文件中)
+								生成步骤
+								1.编写一个个人*.wsdd文件,描述某一个web服务(下载文件中, sample > stock > deploy.wsdd)
+									<deployment name="test" xmlns="http://xml.apache.org/axis/wsdd/" 
+									    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+									  <service name="WSDD" provider="java:RPC">
+									    <parameter name="className" value="指定类的位置和类型" />
+									    <parameter name="allowedMethods" value="指定方法名(发布一个方法)或者*号(全发布)" />
+									  </service>
+									</deployment>
+																		
+								
+								2.在Axis\web-inf\下执行命令:
+									java org.apache.axis.client.AdminClient 发布.wsdd
+					5.文件的结构:
+						AXIS
+							web-inf
+									----server-config.wsdd
+								classes
+									--包结构的class文件
+									
+					6.修改server-config.wsdd
+					7.取消服务:
+						1.编写取消的 *.wsdd
+						2.执行命令
+							java org.apache.axis.client.AdminClient 取消.wsdd
+			
+					8.webservice object的生存范围
+							<parameter name="scope"  value="request/session/application"
+							REQUEST:Axis为每一个SOAP的请求产生服务对象
+							SESSION:Axis为每一个调用webservice的客户端产生对象
+							APPLICATION:在服务器的内存中直接new 一个服务对象
+							
+							
+传递javabean
+1.webservice的调用返回值是基本数据类型
+	--返回值:自定义的java类(支持序列化--在网络中传输)
+	返回单个对象的webservice的编写
+		1.服务端编写
+			1.自定义java类
+			2.编写服务类
+			3.class文件发布到axis\web-inf\classes
+			4.修改server-config.wsdd(定制发布)		
+			5.自定义的java类的类型, 在webservice的配置文件中进行描述
+				<beanMapping languageSpecificType="java(语言类型):wsdd.bean.Bean(引用类的位置)" qname="nsl(命名空间与xmlns后对应):Bean(调用名称)" xmlns:nsl="BeanService"(固定) />
+				bean中使用了内部类:尽量使用静态,静态的才能序列化
+
+
+
+Handler的使用
+	1.Handler的作用:类似于servlet中的filter
+		客户端---http请求---filter的过滤---资源访问
+		filter使用:
+			权限认证
+			记录用户操作
+			加密解密
+			对象缓存
+	2.ws的工作原理
+		SOAP消息--------------------web服务器(部署Handler)
+	3.实现步骤
+		1.接口方式:org.apache.axis.Handler
+		2.继承方式:org.apache.axis.Handler.BasicHandler (常用)
+					--方法:MessageContext() 接收和相应客户端的请求-SOAPMessage
+
+		3.Handler配合Service出现
+
+
+
+Chain 的使用
+chain 是 Handler 串
+	service---Handler:不同的请求需要调用的 Handler 不同
+	在server-config.wsdd中定义handler和chain, 在service中使用chain
+	
+	
+
+传递复杂数据对象
+	List
+	Map
+	数组
+	自定义对象
+	1.javaBean的使用--必须是可序列化的 <内部属性也必须支持序列化>
+	2.找到javaBean的描述, 将此类, 在call中进行设置(序列化, 反序列化)
+	
+	3.自定义的类中, 存在内部类(内部类必须用static修饰, 并实现Serializable)
+
+
+
+文件上传
+
+
+
+
+
+
+
+
+
+
+
+
+
+
