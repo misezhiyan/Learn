@@ -1,0 +1,3 @@
+webservice调用
+axis:	Locator.getXXXService ==>  service.直接调用方法 ==>直接返回参数
+axis2;	Stub.直接调用方法 ==>返回response ==> response直接获取返回参数
