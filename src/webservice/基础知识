@@ -135,7 +135,15 @@ soap的一个开源框架
 	
 
 
-
+spring + hibernat + webservice
+	hibernat
+	1.查询简单的数据类型
+	2.单个的自定义的对象
+	3.返回一个集合
+	将Hibernate的DAO交给spring
+	spring 中注册远程服务
+创建客户端
+	调用远程服务接口, 完成数据检索
 
 
 

@@ -1,0 +1,5 @@
+开机启动
+reg add HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v 要启动的名称 /t REG_SZ /d 要启动的软件的位置 /f
+reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v 要删除启动的名称 /f
+
+reg add HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v Notepad++ /t REG_SZ /d F:\NotePade++\Npp++\notepad++.exe /f
